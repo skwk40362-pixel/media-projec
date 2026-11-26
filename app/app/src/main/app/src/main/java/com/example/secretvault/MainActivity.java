@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PICK_FILE_REQUEST = 101;
     private String currentCategory = "Photos";
-    private final String SECRET_PIN = "1234"; // ডিফল্ট পাসওয়ার্ড 1234
+    private final String SECRET_PIN = "1234";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,17 +88,17 @@ public class MainActivity extends AppCompatActivity {
         layout.addView(header);
 
         Button btnPhoto = new Button(this);
-        btnPhoto.setText("Hide Photo (ছবি লুকান)");
+        btnPhoto.setText("Hide Photo");
         btnPhoto.setOnClickListener(v -> openFilePicker("image/*", "Photos"));
         layout.addView(btnPhoto);
 
         Button btnVideo = new Button(this);
-        btnVideo.setText("Hide Video (ভিডিও লুকান)");
+        btnVideo.setText("Hide Video");
         btnVideo.setOnClickListener(v -> openFilePicker("video/*", "Videos"));
         layout.addView(btnVideo);
 
         Button btnAudio = new Button(this);
-        btnAudio.setText("Hide Audio (অডিও লুকান)");
+        btnAudio.setText("Hide Audio");
         btnAudio.setOnClickListener(v -> openFilePicker("audio/*", "Audios"));
         layout.addView(btnAudio);
 
