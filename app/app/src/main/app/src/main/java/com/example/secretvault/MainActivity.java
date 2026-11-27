@@ -18,8 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -130,16 +131,11 @@ public class MainActivity extends AppCompatActivity {
             }
 
             File destFile = new File(vaultDir, fileName + ".locked");
-            InputStream in = getContentResolver().openInputStream(uri);
-            FileOutputStream out = new FileOutputStream(destFile);
-
-            byte[] buffer = new byte[4096];
-            int len;
-            while ((len = in.read(buffer)) > 0) {
-                out.write(buffer, 0, len);
+            try (InputStream in = getContentResolver().openInputStream(uri)) {
+                if (in != null) {
+                    Files.copy(in, destFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                }
             }
-            in.close();
-            out.close();
 
             Toast.makeText(this, "Hidden in .SecretVault/" + currentCategory, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
@@ -153,10 +149,12 @@ public class MainActivity extends AppCompatActivity {
             try (Cursor cursor = getContentResolver().query(uri, null, null, null, null)) {
                 if (cursor != null && cursor.moveToFirst()) {
                     int index = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                    if (index >= 0) result = cursor.getString(index);
+                    if (index >= 0) {
+                        result = cursor.getString(index);
+                    }
                 }
             }
         }
         return result;
     }
-    }
+}
